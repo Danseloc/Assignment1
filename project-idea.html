@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daniel Coles - Assignment 1 - Project</title>
+    <p><a href="landing.html">Home</a>&emsp;<a href="ideal-job.html">Ideal Job</a>&emsp;<a href="profile.html">Profile</a>&emsp;<a href="project-idea.html">Project</a></p>
+</head>
+<body>
+<h1>Project Idea</h1>
+<h3>Search and Rescue Rapid Triangulation Drone (SAR-RTD)</h3>
+<h3><i>Overview</i></h3>
+<p>This project aims to develop a drone and corresponding software whose purpose is to triangulate the location of a cell phone in the area using radio frequency. This will be achieved by outfitting a drone with a radio wave frequency receiver configured to receive frequencies that cell phones use, typically within the 0.2GHz – 2.7GHz range, and a transmitter configured to the same range. SAR-RTD will trick a cell phone within range by mimicking a cell tower (broadcasting in the same ranges as a cell tower would and sending the same signals a cell tower would, more on this later), triggering a response from the phone. The time this response takes to reach the drone will be recorded by SAR-RTD. This process will be repeated until three return messages have been received by the drone. GPS data at the time of receiving a response is recorded, and the time taken for the response to be received is recorded. Based on this information the companion software will produce a location on a map corresponding with the source of the EMF responses, thus giving the SAR ground team some actionable information.</p>
+<h3><i>Motivation</i></h3>
+<p>The first hour of a search and rescue operation is the most critical, having any information to go on in that hour is vital, be it word of mouth, last known location, or a cell phone location provided by SAR-RTD. Such information can change the outcome of a search drastically. There are already items on the market which make SAR-RTD mostly redundant namely Personal Locator Beacons, however, PLBs are not carried ubiquitously by almost every hiker. Conversely, in 2017, around 18.6 million Australians owned a cell phone. Pair that statistic with cell phone service coverage in Australia, which equates to about 27% of the landmass (ClientSAT, 2021), with national parks largely excluded from that area, and the probability of someone becoming lost with a cell phone on them but outside of service range seems high. </p>
+<h3><i>Specifics</i></h3>
+<p>For the purpose of this project, I won’t point to a specific drone on the market but instead I’ll describe the components that would be needed within a drone to achieve the goal of triangulating a cell phone. </p>
+<p>Drone battery options – Lithium poly due to being lighter weight, more durable, and thinner designs available. The downside to lithium poly vs lithium Ion is shorter battery life, but it is not by a significant amount, and I wouldn’t expect the SAR-RTD to be airborne for extended periods of time due to it having a very specific job.</p>
+<p>To control the drone, I would opt for a 900 MHz transceiver system. This suits the project due to it not interfering with the cell phone range of 0.2 to 2.7 GHz yet also being powerful enough to penetrate vegetation and other obstacles. One example of a suitable receiver on the market is the R9M 2019 from FrSKY, it has an advertised operating range of up to 10 Kms which suits the objective. </p>
+<p>An RF transceiver capable of up to 2.7 GHz is required for the drone to communicate with the cell phone but it is more complicated than that. The exchange protocols of a cell phone and a cell tower are unique to each service carrier and kept secret for business reasons. To fully realise this project, I would have to work with the various telecom companies in Australia to configure the drone to act as a mobile cell tower, which far exceeds the scope of this project. Without the proper identifiers in my outgoing RF signal, the target cell phone would not even respond to the drone. To simulate this project and present a proof of concept, a “surrogate” cell phone would act in place of the real thing. This surrogate device would consist of a transmitter and a receiver at a set frequency, a Raspberry Pi would work well as the framework. The drone would be fitted with another Raspberry Pi with transceiver configured to the same frequency as the surrogate, and a GPS chip installed.</p>
+<p>To bring all these components together, an application would be written in python to initiate the drone’s request message, and then log the precise time of the incoming message from the surrogate. The time from when the request was sent to when the returning message was received is what is used to calculate the distance. With two known variables, the speed of light, and time taken for RF signal to travel, we can use the following formula to calculate the distance:</p>
+<br>
+<p>S=Distance<br>T=Time<br>C=Speed of light<br><br>S=(T*C)/2</p>
+<p>Dividing by two due to the program on the drone capturing the time and distance of two message, the request, and the reply. </p>
+<p>The program on the Drone’s Pi will have to amalgamate the GPS data with the distance calculations and, knowing that EMF is emitted in a sphere from the transmitter, triangulate the location of the surrogate device and present that data visually via a computer to the drone operator.</p>
+<p>A visual display needs to be relayed back to the drone pilot so they don’t crash into obstacles, a GoPro can be attached to the Raspberry Pi on the drone to achieve this.</p>
+<p>And lastly, all the information captured on the Drone’s Raspberry Pi, needs to be fed back to a computer at the drone pilot, showing them the GoPro footage and the results of the program on a map. This can be done with any high bandwidth frequency signal, 4g would suit that task best. </p>
+<h3><i>Skills Required</i></h3>
+<p>As mentioned previously, to fully realise this project, insider knowledge of telecommunication infrastructure would be needed, this is not really feasible in the given constraints. However, a proof of concept would be achievable. </p>
+<p>To build the drone and its attached components, raspberry pi etc, a basic level of computer systems is needed. This skill level is feasible; however, the components are somewhat expensive.</p>
+<p>To code the software would require a good understanding of Python and coding in general. I am not personally at this level yet, but it would be feasible to achieve with help. There are various opensource Python libraries that can be used in this project; for example, PyEmbedded has a GPS module which simplifies the task of extracting GPS data from the drones Raspberry Pi.</p>
+<h3><i>Outcome</i></h3>
+<p>The goal of SAR-RTD is to give Search and Rescue teams a rapid first action to take upon arriving on scene. Deploy the drone and do a sweep for cell signals. If you don’t get a response then carry on with a normal search, but if you do get a response then you can immediately start directing teams to possible locations. This technology could potentially save lives by equipping SAR teams with a powerful way to capitalise on that critical first hour of searching. </p>
+
+<a href="#top">Top</a>
+</body>
+
+</html>
